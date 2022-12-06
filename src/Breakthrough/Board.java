@@ -2,9 +2,9 @@ package Breakthrough;
 
 public class Board
 {
-    private int[][] boardArray;
-    private int rowSize;
-    private int columnSize;
+    private final int[][] boardArray;
+    private final int rowSize;
+    private final int columnSize;
 
     /* This constructor is strictly for making fresh boards */
     public Board(int rowSize, int columnSize)
@@ -26,14 +26,12 @@ public class Board
             }
         }
     }
-
     public Board(Board board, int fromRow, int fromColumn, int toRow, int toColumn)
     {
         this.rowSize = board.getRowSize();
         this.columnSize = board.getColumnSize();
         this.boardArray = new int[rowSize][columnSize];
         for (int i = 0; i < this.rowSize; i++)
-        {
             for (int j = 0; j < this.columnSize; j++)
             {
                 if (i == fromRow && j == fromColumn)
@@ -43,19 +41,18 @@ public class Board
                 else
                     this.boardArray[i][j] = board.boardArray[i][j];
             }
-        }
     }
     public int getPosition(int row, int column) {return boardArray[row][column];}
-    public int[][] getBoardArray() { return boardArray; }
     public int getRowSize(){return this.rowSize;}
     public int getColumnSize(){return this.columnSize;}
     public void printArray()
     {
         System.out.println();
-        for (int i = 0; i < this.rowSize; i++)
+        for (int i = 0; i < this.rowSize; i++) {
             for (int j = 0; j < this.columnSize; j++)
                 System.out.print(this.boardArray[i][j] + " ");
             System.out.println();
+        }
         System.out.println();
     }
     public void printBoard()
@@ -72,9 +69,10 @@ public class Board
             {
                 for (int k = 0; k < rowSize; k++)
                 {
-                    int blackwhite = ((i % 2 == 0 && k % 2 == 0) || (i % 2 == 1 && k % 2 == 1)) ? 1 : 0;
+                    int blackOrWhite = ((i % 2 == 0 && k % 2 == 0) || (i % 2 == 1 && k % 2 == 1)) ? 1 : 0;
                     int player = boardArray[i][k];
-                    System.out.print(Squares[blackwhite + (player * 2)][j]);
+                    int newMove = false ? 6 : 0;
+                    System.out.print(Squares[blackOrWhite + (player * 2) + newMove][j]);
                 }
                 System.out.println();
             }
