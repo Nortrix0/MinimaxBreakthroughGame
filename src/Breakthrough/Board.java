@@ -45,32 +45,10 @@ public class Board
             }
         }
     }
-
-    public int[][] makeMove(int fromRow, int fromColumn, int toRow, int toColumn)
-    {
-        int[][] newBoardArray = new int[this.rowSize][this.columnSize];
-        for (int i = 0; i < this.rowSize; i++)
-        {
-            for (int j = 0; j < this.columnSize; j++)
-            {
-                if (i == fromRow && j == fromColumn)
-                    newBoardArray[i][j] = 0;
-                else if (i ==toRow && j == toColumn)
-                    newBoardArray[i][j] = this.boardArray[fromRow][fromColumn];
-                else
-                    newBoardArray[i][j] = this.boardArray[i][j];
-            }
-        }
-        return newBoardArray;
-    }
-
-    public void setPosition(int row, int column, int player){this.boardArray[row][column] = player;}
     public int getPosition(int row, int column) {return boardArray[row][column];}
     public int[][] getBoardArray() { return boardArray; }
     public int getRowSize(){return this.rowSize;}
     public int getColumnSize(){return this.columnSize;}
-
-
     public void printArray()
     {
         System.out.println();
@@ -80,45 +58,26 @@ public class Board
             System.out.println();
         System.out.println();
     }
-
     public void printBoard()
     {
-        String[] blackWithP1Piece = {"     "," (+) ","     "};
-        String[] blackWithP1PieceNewMove = {"     ",ConsoleColors.GREEN+" (+) " + ConsoleColors.RESET,"     "};
-        String[] whiteWithP1Piece = {"#####","#(+)#","#####"};
-        String[] whiteWithP1PieceNewMoves = {"#####","#"+ConsoleColors.GREEN+"(+)"+ConsoleColors.RESET+"#","#####"};
-        String[] blackWithP2Piece = {"     "," (-) ","     "};
-        String[] blackWithP2PieceNewMove = {"     ",ConsoleColors.GREEN+" (-) " + ConsoleColors.RESET,"     "};
-        String[] whiteWithP2Piece = {"#####","#(-)#","#####"};
-        String[] whiteWithP2PieceNewMoves = {"#####","#"+ConsoleColors.GREEN+"(-)"+ConsoleColors.RESET+"#","#####"};
-        String[] blackSquare = {"     ","     ","     "};
-        String[] whiteSquare = {"#####","#####","#####",};
-
+        //Order is Empty Black, Empty White,
+        // Player 1 Black, Player 1 White,
+        // Player 2 Black, Player 2 White,
+        // Player 1 Black New Move, Player 1 White New Move,
+        // Player 2 Black New Move, Player 2 White New Move
+        String[][] Squares = { {"     ","     ","     "}, {"#####","#####","#####",}, {"     "," (+) ","     "}, {"#####","#(+)#","#####"}, {"     "," (-) ","     "}, {"#####","#(-)#","#####"}, {"     ",ConsoleColors.GREEN+" (+) " + ConsoleColors.RESET,"     "}, {"#####","#"+ConsoleColors.GREEN+"(+)"+ConsoleColors.RESET+"#","#####"}, {"     ",ConsoleColors.GREEN+" (-) " + ConsoleColors.RESET,"     "}, {"#####","#"+ConsoleColors.GREEN+"(-)"+ConsoleColors.RESET+"#","#####"} };
         System.out.println();
         for (int i = 0; i < columnSize; i++)
-        {
-            for (int j = 0; j < blackWithP1Piece.length; j++)
+            for (int j = 0; j < Squares[0].length; j++)
             {
                 for (int k = 0; k < rowSize; k++)
                 {
-                    if ((i % 2 == 0 && k % 2 == 0) || (i % 2 == 1 && k % 2 == 1))
-                    {
-                        if (boardArray[i][k] == 0)
-                            System.out.print(blackSquare[j]);
-                        else
-                            System.out.print(boardArray[i][k] == 1 ? blackWithP1Piece[j] : blackWithP2Piece[j]);
-                    }
-                    else
-                    {
-                        if (boardArray[i][k] == 0)
-                            System.out.print(whiteSquare[j]);
-                        else
-                            System.out.print(boardArray[i][k] == 1 ? whiteWithP1Piece[j] : whiteWithP2Piece[j]);
-                    }
+                    int blackwhite = ((i % 2 == 0 && k % 2 == 0) || (i % 2 == 1 && k % 2 == 1)) ? 1 : 0;
+                    int player = boardArray[i][k];
+                    System.out.print(Squares[blackwhite + (player * 2)][j]);
                 }
                 System.out.println();
             }
-        }
         System.out.println('\n');
     }
 }

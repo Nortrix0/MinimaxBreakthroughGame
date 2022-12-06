@@ -33,18 +33,18 @@ public class Solution
         for (Node myPlayerMove1: player.getHeadNode().getPlayerMoves(me)) // for all player moves
         {
             // if player's move results in less opponent pieces, thats a good move. Maybe the best move
-            if (myPlayerMove1.getOffensiveHeuristic(me) > bestMyFirstMove.getOffensiveHeuristic(me))
+            if (myPlayerMove1.getOffensiveHeuristic(opponent) < bestMyFirstMove.getOffensiveHeuristic(opponent))
                 bestMyFirstMove = myPlayerMove1;
             bestMyFirstMove.checkPlayerMoves(opponent); // check for moves opponent can make.
             for (Node opponentPlayerMove1: myPlayerMove1.getPlayerMoves(opponent)) // for all opponent moves
-                if (opponentPlayerMove1.getOffensiveHeuristic(opponent) > bestOpponentFirstMove.getOffensiveHeuristic(opponent))
+                if (opponentPlayerMove1.getOffensiveHeuristic(me) < bestOpponentFirstMove.getOffensiveHeuristic(me))
                     bestOpponentFirstMove = opponentPlayerMove1;  //if opponent move results in less player pieces, good move
             bestOpponentFirstMove.checkPlayerMoves(me); // Check for moves specifically from best opp move
             for (Node myPlayerMove2: bestOpponentFirstMove.getPlayerMoves(me)) // for all player 1 moves from best opp move
-                if (myPlayerMove2.getOffensiveHeuristic(me) > bestMySecondMove.getOffensiveHeuristic(me))
+                if (myPlayerMove2.getOffensiveHeuristic(opponent) < bestMySecondMove.getOffensiveHeuristic(opponent))
                     bestMySecondMove = myPlayerMove2;
         }
-        if (bestMySecondMove.getRemainingPlayerPieces(opponent) > bestMyFirstMove.getRemainingPlayerPieces(opponent))
+        if (bestMySecondMove.getRemainingPlayerPieces(opponent) < bestMyFirstMove.getRemainingPlayerPieces(opponent))
             return bestMySecondMove.getParentNode().getParentNode();
         else
             return bestMyFirstMove;
