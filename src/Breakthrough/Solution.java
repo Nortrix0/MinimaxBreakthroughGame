@@ -32,7 +32,7 @@ public class Solution
         Node bestMySecondMove = player.getHeadNode().getPlayerMove(me).getPlayerMove(opponent).getPlayerMove(me);
         for (Node myPlayerMove1: player.getHeadNode().getPlayerMoves(me)) // for all player moves
         {
-            // if player's move results in less opponent pieces, thats a good move. Maybe the best move
+            // if player's move results in less opponent pieces, that's a good move. Maybe the best move
             if (myPlayerMove1.getOffensiveHeuristic(opponent) < bestMyFirstMove.getOffensiveHeuristic(opponent))
                 bestMyFirstMove = myPlayerMove1;
             bestMyFirstMove.checkPlayerMoves(opponent); // check for moves opponent can make.

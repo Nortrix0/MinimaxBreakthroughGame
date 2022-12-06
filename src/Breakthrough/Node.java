@@ -2,9 +2,9 @@ package Breakthrough;
 import java.util.ArrayList;
 public class Node
 {
-    private Node parentNode;
-    private Board board;
-    private ArrayList<Node>[] playerMoves = new ArrayList[2];
+    private final Node parentNode;
+    private final Board board;
+    private final ArrayList<Node>[] playerMoves = new ArrayList[2];
     /* This Constructor is for the player headNode */
     public Node(Board board) { this(board, null); }
     public Node(Board board, Node parentNode)
@@ -16,15 +16,11 @@ public class Node
     }
     public Node getParentNode() {return this.parentNode;}
     public Board getBoard() { return this.board; }
-    public int[][] getBoardArray() {return this.board.getBoardArray();}
     public ArrayList<Node> getPlayerMoves(int player) { return this.playerMoves[player - 1]; }
     public Node getPlayerMove(int player) { return this.playerMoves[player - 1].get(0); }
-    public Node getPlayerMove(int player, int index) { return this.playerMoves[player - 1].get(index); }
-    public void addPlayerMoves(int player, Node node) {this.playerMoves[player - 1].add(node);}
-    public void removeAllPlayerMoves(int player)
+   public void removeAllPlayerMoves(int player)
     {
-        for (int i = 0; i < this.playerMoves[player - 1].size(); i++)
-            this.playerMoves[player - 1].remove(i);
+        this.playerMoves[player - 1].removeAll(playerMoves[player - 1]);
     }
     public int getRemainingPlayerPieces(int player)
     {
@@ -35,10 +31,10 @@ public class Node
                     num++;
         return num;
     }
-    public int getDefensiveHeuristic(int playerNumber)
-    {
-        return (int) (2 * (getRemainingPlayerPieces(playerNumber) + Math.random()));
-    }
+    //public int getDefensiveHeuristic(int playerNumber)
+    //{
+    //    return (int) (2 * (getRemainingPlayerPieces(playerNumber) + Math.random()));
+    //}
     public int getOffensiveHeuristic(int playerNumber)
     {
         return (int) (2 * (getRemainingPlayerPieces(playerNumber) + Math.random()));
