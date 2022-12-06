@@ -4,8 +4,8 @@ public class Solution
 {
     public static void main(String[] args)
     {
-        //startOffMinimaxGame();
-        startDefMinimaxGame();
+        startOffMinimaxGame();
+        //startDefMinimaxGame();
     }
 
     public static void startOffMinimaxGame()
@@ -47,18 +47,20 @@ public class Solution
     public static Node offMinimaxSearch(Board board, Player player)
     {
         player.setHeadNode(board); // Set players head node to our new board
+        if (player.getHeadNode().winCondition())
+            return player.getHeadNode();
         if (player.getPlayerNumber() == 1)
         {
-            player.getHeadNode().checkPlayer1Moves(player.getHeadNode()); // check for moves player 1 can make
-            player.getHeadNode().getPlayer1Move(0).checkPlayer2Moves(player.getHeadNode().getPlayer1Move(0));
-            player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0).checkPlayer1Moves(player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0));
+            player.getHeadNode().checkPlayer1Moves(); // check for moves player 1 can make
+            player.getHeadNode().getPlayer1Move(0).checkPlayer2Moves();
+            player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0).checkPlayer1Moves();
             Node bestP1FirstMove = player.getHeadNode().getPlayer1Move(0);
             Node bestP2FirstMove = player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0);
             Node bestP1SecondMove = player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0).getPlayer1Move(0);
             for (Node player1Move1: player.getHeadNode().getPlayer1Moves()) // for all player 1 moves
             {
                 // if player 1's move results in less opponent pieces, thats a good move. Maybe the best move
-                if (player1Move1.getOffensiveHeuristic() < bestP1FirstMove.getOffensiveHeuristic())
+                if (player1Move1.getOffensiveHeuristic(1) < bestP1FirstMove.getOffensiveHeuristic(1))
                 {
                     /*
                     System.out.println("Best first move changed from");
@@ -70,10 +72,10 @@ public class Solution
                     bestP1FirstMove = player1Move1;
                 }
 
-                player1Move1.checkPlayer2Moves(player1Move1); // check for moves player 2 can make.
+                player1Move1.checkPlayer2Moves(); // check for moves player 2 can make.
                 for (Node player2Move1: player1Move1.getPlayer2Moves()) // for all player 2 moves
                 {
-                    if (player2Move1.getOffensiveHeuristic() < bestP2FirstMove.getOffensiveHeuristic())
+                    if (player2Move1.getOffensiveHeuristic(2) < bestP2FirstMove.getOffensiveHeuristic(2))
                     {
                         /*
                         System.out.println("Best player2 first move changed from");
@@ -86,12 +88,12 @@ public class Solution
                     }
 
                 }
-                bestP2FirstMove.checkPlayer1Moves(bestP2FirstMove); // Check for moves specifically from best opp move
+                bestP2FirstMove.checkPlayer1Moves(); // Check for moves specifically from best opp move
                 for (Node player1Move2: bestP2FirstMove.getPlayer1Moves()) // for all player 1 moves from best opp move
                 {
                     //System.out.println("First player: Possible third move from best second move");
                     //player1Move2.getBoard().printArray();
-                    if (player1Move2.getOffensiveHeuristic() < bestP1SecondMove.getOffensiveHeuristic())
+                    if (player1Move2.getOffensiveHeuristic(1) < bestP1SecondMove.getOffensiveHeuristic(1))
                     {
                         /*
                         System.out.println("Best second move changed from");
@@ -111,16 +113,16 @@ public class Solution
         }
         else
         {
-            player.getHeadNode().checkPlayer2Moves(player.getHeadNode());
-            player.getHeadNode().getPlayer2Move(0).checkPlayer1Moves(player.getHeadNode().getPlayer2Move(0));
-            player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0).checkPlayer2Moves(player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0));
+            player.getHeadNode().checkPlayer2Moves();
+            player.getHeadNode().getPlayer2Move(0).checkPlayer1Moves();
+            player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0).checkPlayer2Moves();
             Node bestP2FirstMove = player.getHeadNode().getPlayer2Move(0);
             Node bestP1FirstMove = player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0);
             Node bestP2SecondMove = player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0).getPlayer2Move(0);
             for (Node player2Move1: player.getHeadNode().getPlayer2Moves())
             {
                 // if player 2's move results in less opponent pieces, thats a good move. Maybe the best move
-                if (player2Move1.getOffensiveHeuristic() < bestP2FirstMove.getOffensiveHeuristic())
+                if (player2Move1.getOffensiveHeuristic(2) < bestP2FirstMove.getOffensiveHeuristic(2))
                 {
                     /*
                     System.out.println("Best first move changed from");
@@ -131,10 +133,10 @@ public class Solution
                      */
                     bestP2FirstMove = player2Move1;
                 }
-                player2Move1.checkPlayer1Moves(player2Move1);
+                player2Move1.checkPlayer1Moves();
                 for (Node player1Move1: player2Move1.getPlayer1Moves()) // for all player 2 moves
                 {
-                    if (player1Move1.getOffensiveHeuristic() < bestP1FirstMove.getOffensiveHeuristic())
+                    if (player1Move1.getOffensiveHeuristic(1) < bestP1FirstMove.getOffensiveHeuristic(1))
                     {
                         /*
                         System.out.println("Best player1 first move changed from");
@@ -146,10 +148,10 @@ public class Solution
                         bestP1FirstMove = player1Move1;  //if player 2 move results in less player 1 pieces, good move
                     }
                 }
-                bestP1FirstMove.checkPlayer2Moves(bestP1FirstMove); // Check for moves specifically from best opp move
+                bestP1FirstMove.checkPlayer2Moves(); // Check for moves specifically from best opp move
                 for (Node player2Move2: bestP1FirstMove.getPlayer2Moves()) // for all player 1 moves from best opp move
                 {
-                    if (player2Move2.getOffensiveHeuristic() < bestP2SecondMove.getOffensiveHeuristic())
+                    if (player2Move2.getOffensiveHeuristic(2) < bestP2SecondMove.getOffensiveHeuristic(2))
                     {
                         /*
                         System.out.println("Best second move changed from");
@@ -175,16 +177,16 @@ public class Solution
         player.setHeadNode(board); // Set players head node to our new board
         if (player.getPlayerNumber() == 1)
         {
-            player.getHeadNode().checkPlayer1Moves(player.getHeadNode()); // check for moves player 1 can make
-            player.getHeadNode().getPlayer1Move(0).checkPlayer2Moves(player.getHeadNode().getPlayer1Move(0));
-            player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0).checkPlayer1Moves(player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0));
+            player.getHeadNode().checkPlayer1Moves(); // check for moves player 1 can make
+            player.getHeadNode().getPlayer1Move(0).checkPlayer2Moves();
+            player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0).checkPlayer1Moves();
             Node bestP1FirstMove = player.getHeadNode().getPlayer1Move(0);
             Node bestP2FirstMove = player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0);
             Node bestP1SecondMove = player.getHeadNode().getPlayer1Move(0).getPlayer2Move(0).getPlayer1Move(0);
             for (Node player1Move1: player.getHeadNode().getPlayer1Moves()) // for all player 1 moves
             {
                 // if player 1's move results in less opponent pieces, thats a good move. Maybe the best move
-                if (player1Move1.getDefensiveHeuristic() < bestP1FirstMove.getDefensiveHeuristic())
+                if (player1Move1.getDefensiveHeuristic(1) > bestP1FirstMove.getDefensiveHeuristic(1))
                 {
                     /*
                     System.out.println("Best first move changed from");
@@ -196,10 +198,10 @@ public class Solution
                     bestP1FirstMove = player1Move1;
                 }
 
-                player1Move1.checkPlayer2Moves(player1Move1); // check for moves player 2 can make.
+                player1Move1.checkPlayer2Moves(); // check for moves player 2 can make.
                 for (Node player2Move1: player1Move1.getPlayer2Moves()) // for all player 2 moves
                 {
-                    if (player2Move1.getDefensiveHeuristic() < bestP2FirstMove.getDefensiveHeuristic())
+                    if (player2Move1.getDefensiveHeuristic(2) > bestP2FirstMove.getDefensiveHeuristic(2))
                     {
                         /*
                         System.out.println("Best player2 first move changed from");
@@ -212,12 +214,12 @@ public class Solution
                     }
 
                 }
-                bestP2FirstMove.checkPlayer1Moves(bestP2FirstMove); // Check for moves specifically from best opp move
+                bestP2FirstMove.checkPlayer1Moves(); // Check for moves specifically from best opp move
                 for (Node player1Move2: bestP2FirstMove.getPlayer1Moves()) // for all player 1 moves from best opp move
                 {
                     //System.out.println("First player: Possible third move from best second move");
                     //player1Move2.getBoard().printArray();
-                    if (player1Move2.getDefensiveHeuristic() < bestP1SecondMove.getDefensiveHeuristic())
+                    if (player1Move2.getDefensiveHeuristic(1) > bestP1SecondMove.getDefensiveHeuristic(1))
                     {
                         /*
                         System.out.println("Best second move changed from");
@@ -237,16 +239,16 @@ public class Solution
         }
         else
         {
-            player.getHeadNode().checkPlayer2Moves(player.getHeadNode());
-            player.getHeadNode().getPlayer2Move(0).checkPlayer1Moves(player.getHeadNode().getPlayer2Move(0));
-            player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0).checkPlayer2Moves(player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0));
+            player.getHeadNode().checkPlayer2Moves();
+            player.getHeadNode().getPlayer2Move(0).checkPlayer1Moves();
+            player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0).checkPlayer2Moves();
             Node bestP2FirstMove = player.getHeadNode().getPlayer2Move(0);
             Node bestP1FirstMove = player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0);
             Node bestP2SecondMove = player.getHeadNode().getPlayer2Move(0).getPlayer1Move(0).getPlayer2Move(0);
             for (Node player2Move1: player.getHeadNode().getPlayer2Moves())
             {
                 // if player 2's move results in less opponent pieces, thats a good move. Maybe the best move
-                if (player2Move1.getDefensiveHeuristic() < bestP2FirstMove.getDefensiveHeuristic())
+                if (player2Move1.getDefensiveHeuristic(2) > bestP2FirstMove.getDefensiveHeuristic(2))
                 {
                     /*
                     System.out.println("Best first move changed from");
@@ -257,10 +259,10 @@ public class Solution
                      */
                     bestP2FirstMove = player2Move1;
                 }
-                player2Move1.checkPlayer1Moves(player2Move1);
+                player2Move1.checkPlayer1Moves();
                 for (Node player1Move1: player2Move1.getPlayer1Moves()) // for all player 2 moves
                 {
-                    if (player1Move1.getDefensiveHeuristic() < bestP1FirstMove.getDefensiveHeuristic())
+                    if (player1Move1.getDefensiveHeuristic(1) > bestP1FirstMove.getDefensiveHeuristic(1))
                     {
                         /*
                         System.out.println("Best player1 first move changed from");
@@ -272,10 +274,10 @@ public class Solution
                         bestP1FirstMove = player1Move1;  //if player 2 move results in less player 1 pieces, good move
                     }
                 }
-                bestP1FirstMove.checkPlayer2Moves(bestP1FirstMove); // Check for moves specifically from best opp move
+                bestP1FirstMove.checkPlayer2Moves(); // Check for moves specifically from best opp move
                 for (Node player2Move2: bestP1FirstMove.getPlayer2Moves()) // for all player 1 moves from best opp move
                 {
-                    if (player2Move2.getDefensiveHeuristic() < bestP2SecondMove.getDefensiveHeuristic())
+                    if (player2Move2.getDefensiveHeuristic(2) > bestP2SecondMove.getDefensiveHeuristic(2))
                     {
                         /*
                         System.out.println("Best second move changed from");

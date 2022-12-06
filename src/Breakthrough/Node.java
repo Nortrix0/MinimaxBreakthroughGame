@@ -67,8 +67,20 @@ public class Node
         return num;
     }
 
-    public int getDefensiveHeuristic() { return (int) (2 * (getRemainingPlayer1Pieces() + Math.random())); }
-    public int getOffensiveHeuristic(){ return (int) (2 * (getRemainingPlayer2Pieces() + Math.random())); }
+    public int getDefensiveHeuristic(int playerNumber)
+    {
+        if (playerNumber == 1)
+            return (int) (2 * (getRemainingPlayer1Pieces() + Math.random()));
+        else
+            return (int) (2 * (getRemainingPlayer2Pieces() + Math.random()));
+    }
+    public int getOffensiveHeuristic(int playerNumber)
+    {
+        if (playerNumber == 1)
+            return (int) (2 * (getRemainingPlayer2Pieces() + Math.random()));
+        else
+            return (int) (2 * (getRemainingPlayer1Pieces() + Math.random()));
+    }
 
     public boolean winCondition()
     {
@@ -99,7 +111,7 @@ public class Node
         return true;
     }
 
-    public void checkPlayer1Moves(Node parentNode)
+    public void checkPlayer1Moves()
     {
         this.removeAllPlayer1Moves();
         for (int i = 0; i < board.getRowSize(); i++)
@@ -111,19 +123,19 @@ public class Node
                 {
                     // Check for moving straight up
                     if (i - 1 >= 0 && board.getPosition(i-1,j) == 0)
-                        this.player1Moves.add(new Node(new Board(this.board,i,j,i-1,j), parentNode));
+                        this.player1Moves.add(new Node(new Board(this.board,i,j,i-1,j), this));
                     // Check for up and to the right
                     if (i-1 >= 0 && j + 1 < 8 && board.getPosition(i-1,j+1) != 1)
-                        this.player1Moves.add(new Node(new Board(this.board,i,j,i-1,j+1), parentNode));
+                        this.player1Moves.add(new Node(new Board(this.board,i,j,i-1,j+1), this));
                     // Check for up and to the left
                     if (i-1 >= 0 && j - 1 >= 0 && board.getPosition(i-1,j-1) != 1)
-                        this.player1Moves.add(new Node(new Board(this.board,i,j,i-1,j-1), parentNode));
+                        this.player1Moves.add(new Node(new Board(this.board,i,j,i-1,j-1), this));
                 }
             }
         }
     }
 
-    public void checkPlayer2Moves(Node parentNode)
+    public void checkPlayer2Moves()
     {
         this.removeAllPlayer2Moves();
         for (int i = 0; i < board.getRowSize(); i++)
@@ -135,13 +147,13 @@ public class Node
                 {
                     // Check for moving straight down
                     if (i + 1 < 8 && board.getPosition(i+1,j) == 0)
-                        this.player2Moves.add(new Node(new Board(this.board,i,j,i+1,j), parentNode));
+                        this.player2Moves.add(new Node(new Board(this.board,i,j,i+1,j), this));
                     // Check for down and to the right
                     if (i + 1 < 8 && j + 1 < 8 && board.getPosition(i+1,j+1) != 2)
-                        this.player2Moves.add(new Node(new Board(this.board,i,j,i+1,j+1), parentNode));
+                        this.player2Moves.add(new Node(new Board(this.board,i,j,i+1,j+1), this));
                     // Check for down and to the left
                     if (i + 1 < 8 && j - 1 >= 0 && board.getPosition(i+1,j-1) != 2)
-                        this.player2Moves.add(new Node(new Board(this.board,i,j,i+1,j-1), parentNode));
+                        this.player2Moves.add(new Node(new Board(this.board,i,j,i+1,j-1), this));
                 }
             }
         }
