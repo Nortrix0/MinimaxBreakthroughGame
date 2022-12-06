@@ -75,13 +75,9 @@ public class Board
     {
         System.out.println();
         for (int i = 0; i < this.rowSize; i++)
-        {
             for (int j = 0; j < this.columnSize; j++)
-            {
                 System.out.print(this.boardArray[i][j] + " ");
-            }
             System.out.println();
-        }
         System.out.println();
     }
 
@@ -109,28 +105,15 @@ public class Board
                     {
                         if (boardArray[i][k] == 0)
                             System.out.print(blackSquare[j]);
-                        else if (boardArray[i][k] == 1)
-                        {
-                            System.out.print(blackWithP1Piece[j]);
-                        }
-                        else if (boardArray[i][k] == 2)
-                        {
-                            System.out.print(blackWithP2Piece[j]);
-                        }
+                        else
+                            System.out.print(boardArray[i][k] == 1 ? blackWithP1Piece[j] : blackWithP2Piece[j]);
                     }
                     else
                     {
                         if (boardArray[i][k] == 0)
                             System.out.print(whiteSquare[j]);
-                        else if (boardArray[i][k] == 1)
-                        {
-
-                            System.out.print(whiteWithP1Piece[j]);
-                        }
-                        else if (boardArray[i][k] == 2)
-                        {
-                            System.out.print(whiteWithP2Piece[j]);
-                        }
+                        else
+                            System.out.print(boardArray[i][k] == 1 ? whiteWithP1Piece[j] : whiteWithP2Piece[j]);
                     }
                 }
                 System.out.println();
